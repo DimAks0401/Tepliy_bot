@@ -1,0 +1,69 @@
+import discord
+import random
+import os
+from discord.ext import commands
+from Token import TOKEN
+
+Sovets = ["Пойди к призеденту и скажи что ты знаешь как остановить глобальное потепление. Надо скинуть 250 тысяч тонн тротила на все фабрики.",
+          "Никогда и ни-за что не пользуйтесь электроприборами."]
+
+Shutki = ["Шутка номер 1: Урок математики: Фабрика = плохо. Самолёт = плохо + плохо. Фабрика + самолёт = глобальное потепление.",
+          "Шутка номер 2: Почему глобальное потепление не любит ходить на вечеринки? Потому что там всегда жарко!",
+          "Шутка номер 3: Как глобальное потепление себя чувствует зимой? Оно просто растает от смеха!",
+          "Шутка номер 4: Глобальное потепление — это как плохой фильм: все знают, что это плохо, но никто не хочет ничего менять.",
+          "Шутка номер 5: Почему глобальное потепление похоже на пиратов? Оба они угрожают льдам!",
+          "Шутка номер 6: Как глобальное потепление отмечает свой день рождения? Оно тает от радости!",
+          "Шутка номер 7: Как глобальное потепление влияет на погодные прогнозы? Оно делает их горячими!"]
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='/', intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')
+
+@bot.command()
+async def hello(ctx):
+    await ctx.send(f'Hello World! Я бот {bot.user}!')
+
+@bot.command()
+async def sovet(ctx):
+    await ctx.send("Сейчас вам скажут как предотвратить глобальное потепление.")
+    await ctx.send("!Внимание! Не в коем случае не повторяйте это дома, потому-что это может быть опасно!")
+    await ctx.send(random.choice(Sovets))
+
+@bot.command()
+async def meme(ctx):
+    MemeList = os.listdir("meme")
+    rmeme = random.choice(MemeList)
+    with open(f'meme/{rmeme}', 'rb') as f:
+        # В переменную кладем файл, который преобразуется в файл библиотеки Discord!
+        picture = discord.File(f)
+   # Можем передавать файл как параметр!
+    await ctx.send(file=picture)
+
+@bot.command()
+async def poteplenie(ctx):
+    await ctx.send("Ссылка на статью: https://www.un.org/ru/un75/climate-crisis-race-we-can-win от ООН")
+    await ctx.send("Ещё одна ссылка: https://www.un.org/ru/climatechange/science/causes-effects-climate-change")
+    await ctx.send("Если не хотите читать статью то читайте то что снизу.")
+    await ctx.send("-----------")
+    await ctx.send("Снизу это здесь:")
+    await ctx.send("-----------")
+    await ctx.send("Что такое глобальное потепление и с чем его едят.")
+    await ctx.send("Глобальное потепление это когда атмосфера и поверхность земли нагревается")
+    await ctx.send("Причины глобального потепления это: фабрики, самолёты, машины на бензине, добыча ресурсов, плохое отношение к людям (хи-хи), сжигание мусора без фильтров.")
+    await ctx.send("К сожелению, если мы уберём все причины, то глобальное потепление прдолжиться только медленно, потому что земля ещё и нагревается изнутри.")
+    await ctx.send("И нагревает поверхность.")
+    await ctx.send("А та в свою очередь нагревает атмосферу")
+
+
+@bot.command()
+async  def shutka(ctx):
+    await ctx.send("Внимание, сейчас будет шутка.")
+    await ctx.send(random.choice(Shutki))
+    await ctx.send("Ха-ха-ха. Как смешно. :)")
+
+bot.run(TOKEN)
